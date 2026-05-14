@@ -1,0 +1,51 @@
+async function getData() {
+  const sheetId = "1wucx2uD8I32pQkexu3lyJ7x986ZfngU6VI26hvaWTqA";
+  const url = `https://opensheet.elk.sh/${sheetId}/シート1`;
+
+  const res = await fetch(url, {
+    cache: "no-store",
+  });
+
+  return res.json();
+}
+
+export default async function Home() {
+  const data = await getData();
+
+  const uniqueEnemies = [
+    ...new Map(data.map((item: any) => [item.敵名, item])).values(),
+  ];
+
+  return (
+    <main style={{ padding: 20 }}>
+      <h1>Project神峯寺(仮)戦報DB</h1>
+
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
+          gap: 16,
+          marginTop: 20,
+        }}
+      >
+        {uniqueEnemies.map((enemy: any) => (
+          <a
+            key={enemy.敵名}
+            href={`/enemy/${encodeURIComponent(enemy.敵名)}`}
+            style={{
+              border: "1px solid #ccc",
+              borderRadius: 12,
+              padding: 20,
+              textDecoration: "none",
+              color: "black",
+              fontSize: 24,
+              fontWeight: "bold",
+            }}
+          >
+            {enemy.敵名}
+          </a>
+        ))}
+      </div>
+    </main>
+  );
+}
