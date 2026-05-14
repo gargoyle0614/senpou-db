@@ -6,7 +6,9 @@ async function getData() {
     cache: "no-store",
   });
 
-  return res.json();
+  const json = await res.json();
+
+return Array.isArray(json) ? json : [];
 }
 
 export default async function Home() {
