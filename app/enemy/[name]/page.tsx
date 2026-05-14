@@ -48,13 +48,16 @@ export default async function EnemyPage({
         {images.map((item, index) => (
           <a key={index} href={item.画像URL} target="_blank">
             <img
-              src={driveImageUrl(item.画像URL)}
+  src={driveImageUrl(item.画像URL)}
+  referrerPolicy="no-referrer"
               alt={item.敵名}
               style={{
-                width: "100%",
-                borderRadius: 12,
-                border: "1px solid #ddd",
-              }}
+  width: "100%",
+  height: "300px",
+  objectFit: "cover",
+  borderRadius: 12,
+  border: "1px solid #ddd",
+}}
             />
           </a>
         ))}
