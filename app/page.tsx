@@ -12,9 +12,9 @@ async function getData() {
 export default async function Home() {
   const data = await getData();
 
-  const uniqueEnemies = [
-    ...new Map(data.map((item: any) => [item.敵名, item])).values(),
-  ];
+  const uniqueEnemies = Array.from(
+  new Map(data.map((item: any) => [item.敵名, item])).values()
+);
 
   return (
     <main style={{ padding: 20 }}>
