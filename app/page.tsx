@@ -1,50 +1,32 @@
 async function getData() {
-  const sheetId = "1wucx2uD8I32pQkexu3lyJ7x986ZfngU6VI26hvaWTqA";
+  const sheetId = "1wUcx2uD8I32p0kexu31yJ7x986ZfngU6VI26hvaWTqA";
   const url = `https://opensheet.elk.sh/${sheetId}/シート1`;
 
-  const res = await fetch(url, {
-    cache: "no-store",
-  });
-
+  const res = await fetch(url, { cache: "no-store" });
   const json = await res.json();
 
-return Array.isArray(json) ? json : [];
+  if (!Array.isArray(json)) {
+    return [];
+  }
+
+  return json;
 }
 
-export default async function Home() {
-  const data = await getData();
+export default async function EnemyPage({ params }: { params: { name: string } }) {
+  const enemyName = params.name;
+  const data: any[] = await getData();
 
-  const uniqueEnemies = Array.from(
-  new Map(data.map((item: any) => [item.敵名, item])).values()
-);
+  const images = data.filter((item) => item.敵名 === enemyName);
 
   return (
     <main style={{ padding: 20 }}>
-      <h1>Project神峯寺(仮)戦報DB</h1>
+      <a href="/">← 敵一覧へ戻る</a>
+      <h1>{enemyName}</h1>
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
-          gap: 16,
-          marginTop: 20,
-        }}
-      >
-        {uniqueEnemies.map((enemy: any) => (
-          <a
-            key={enemy.敵名}
-            href={`/enemy/${encodeURIComponent(enemy.敵名)}`}
-            style={{
-              border: "1px solid #ccc",
-              borderRadius: 12,
-              padding: 20,
-              textDecoration: "none",
-              color: "black",
-              fontSize: 28,
-              fontWeight: "bold",
-            }}
-          >
-            {enemy.敵名}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 20 }}>
+        {images.map((item, index) => (
+          <a key={index} href={item.画像URL} target="_blank">
+            <img src={item.画像URL} alt={item.敵名} style={{ width: "100%", borderRadius: 12 }} />
           </a>
         ))}
       </div>
