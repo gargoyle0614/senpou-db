@@ -16,7 +16,7 @@ function driveImageUrl(url: string) {
 
   if (!match) return url;
 
-  return `https://drive.google.com/uc?export=view&id=${match[1]}`;
+  return `https://drive.google.com/thumbnail?id=${match[1]}&sz=w1000`;
 }
 
 export default async function EnemyPage({
@@ -27,37 +27,76 @@ export default async function EnemyPage({
   const enemyName = decodeURIComponent(params.name);
   const data: any[] = await getData();
 
-  const images = data.filter((item) => item.敵名 === enemyName);
+  const images = data.filter(
+    (item) => item.敵名 === enemyName
+  );
 
   return (
-    <main style={{ padding: 20 }}>
-      <a href="/">← 敵一覧へ戻る</a>
+    <main
+      style={{
+        padding: 20,
+        background: "#f5f5f5",
+        minHeight: "100vh",
+      }}
+    >
+      <a
+        href="/"
+        style={{
+          display: "inline-block",
+          marginBottom: 20,
+          textDecoration: "none",
+          color: "#333",
+          fontWeight: "bold",
+        }}
+      >
+        ← 敵一覧へ戻る
+      </a>
 
-      <h1>{enemyName}</h1>
+      <h1
+        style={{
+          fontSize: "42px",
+          marginBottom: 30,
+        }}
+      >
+        {enemyName}
+      </h1>
 
-      {images.length === 0 && <p>画像がまだありません。</p>}
+      {images.length === 0 && (
+        <p>画像がまだありません。</p>
+      )}
 
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))",
-          gap: 20,
-          marginTop: 20,
+          gridTemplateColumns:
+            "repeat(auto-fill, minmax(280px, 1fr))",
+          gap: 24,
         }}
       >
         {images.map((item, index) => (
-          <a key={index} href={item.画像URL} target="_blank">
+          <a
+            key={index}
+            href={item.画像URL}
+            target="_blank"
+            style={{
+              display: "block",
+              background: "#fff",
+              borderRadius: 16,
+              overflow: "hidden",
+              boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
+              transition: "0.2s",
+            }}
+          >
             <img
-  src={driveImageUrl(item.画像URL)}
-  referrerPolicy="no-referrer"
+              src={driveImageUrl(item.画像URL)}
               alt={item.敵名}
+              referrerPolicy="no-referrer"
               style={{
-  width: "100%",
-  height: "300px",
-  objectFit: "cover",
-  borderRadius: 12,
-  border: "1px solid #ddd",
-}}
+                width: "100%",
+                height: "320px",
+                objectFit: "cover",
+                display: "block",
+              }}
             />
           </a>
         ))}
