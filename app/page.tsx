@@ -1,44 +1,85 @@
-async function getData() {
-  const sheetId = "1wucx2uD8I32pQkexu3lyJ7x986ZfngU6VI26hvaWTqA";
-  const url = `https://opensheet.elk.sh/${sheetId}/シート1`;
+"use client";
 
-  const res = await fetch(url, {
-    cache: "no-store",
-  });
+import { useEffect, useState } from "react";
 
-  const json = await res.json();
+export default function Home() {
+  const [data, setData] = useState<any[]>([]);
+  const [search, setSearch] = useState("");
 
-  return Array.isArray(json) ? json : [];
-}
+  useEffect(() => {
+    async function fetchData() {
+      const sheetId =
+        "1wucx2uD8I32pQkexu3lyJ7x986ZfngU6VI26hvaWTqA";
 
-export default async function Home() {
-  const data: any[] = await getData();
+      const url = `https://opensheet.elk.sh/${sheetId}/シート1`;
 
-  const uniqueEnemies = Array.from(
-    new Map(
-      data
-        .filter((item) => item.敵名)
-        .map((item) => [item.敵名, item])
-    ).values()
+      const res = await fetch(url);
+      const json = await res.json();
+
+      if (Array.isArray(json)) {
+        const uniqueEnemies = Array.from(
+          new Map(
+            json
+              .filter((item) => item.敵名)
+              .map((item) => [item.敵名, item])
+          ).values()
+        );
+
+        setData(uniqueEnemies);
+      }
+    }
+
+    fetchData();
+  }, []);
+
+  const filtered = data.filter((item) =>
+    item.敵名
+      .toLowerCase()
+      .includes(search.toLowerCase())
   );
 
   return (
-    <main style={{ padding: 20 }}>
-      <h1>Project神峯寺(仮)戦報DB</h1>
+    <main
+      style={{
+        padding: 20,
+        background: "#f5f5f5",
+        minHeight: "100vh",
+      }}
+    >
+      <h1
+        style={{
+          fontSize: "48px",
+          marginBottom: 30,
+        }}
+      >
+        Project神峯寺(仮)戦報DB
+      </h1>
 
-      {uniqueEnemies.length === 0 && (
-        <p>敵データが読み込めませんでした。</p>
-      )}
+      <input
+        type="text"
+        placeholder="敵名検索..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        style={{
+          width: "100%",
+          maxWidth: 400,
+          padding: 14,
+          fontSize: 18,
+          borderRadius: 12,
+          border: "1px solid #ccc",
+          marginBottom: 30,
+        }}
+      />
 
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
+          gridTemplateColumns:
+            "repeat(auto-fill, minmax(220px, 1fr))",
           gap: 16,
-          marginTop: 20,
         }}
       >
-        {uniqueEnemies.map((enemy: any) => (
+        {filtered.map((enemy: any) => (
           <a
             key={enemy.敵名}
             href={`/enemy/${encodeURIComponent(enemy.敵名)}`}
@@ -50,6 +91,7 @@ export default async function Home() {
               color: "black",
               fontSize: 28,
               fontWeight: "bold",
+              background: "#fff",
             }}
           >
             {enemy.敵名}
