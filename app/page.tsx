@@ -1,5 +1,5 @@
 async function getData() {
-  const sheetId = "1wUcx2uD8I32p0kexu31yJ7x986ZfngU6VI26hvaWTqA";
+  const sheetId = "1wucx2uD8I32pQkexu3lyJ7x986ZfngU6VI26hvaWTqA";
   const url = `https://opensheet.elk.sh/${sheetId}/シート1`;
 
   const res = await fetch(url, {
