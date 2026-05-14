@@ -23,7 +23,7 @@ export default async function Home() {
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
+          gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
           gap: 16,
           marginTop: 20,
         }}
@@ -38,7 +38,7 @@ export default async function Home() {
               padding: 20,
               textDecoration: "none",
               color: "black",
-              fontSize: 24,
+              fontSize: 28,
               fontWeight: "bold",
             }}
           >
