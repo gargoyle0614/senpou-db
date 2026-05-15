@@ -27,8 +27,12 @@ export default async function EnemyPage({
   const enemyName = decodeURIComponent(params.name);
   const data: any[] = await getData();
 
-  const images = data.filter(
-    (item) => item.敵名 === enemyName
+  const images = data
+  .filter((item) => item.敵名 === enemyName)
+  .sort(
+    (a, b) =>
+      new Date(b.最終更新日).getTime() -
+      new Date(a.最終更新日).getTime()
   );
 
   return (
