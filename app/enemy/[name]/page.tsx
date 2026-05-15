@@ -29,11 +29,12 @@ export default async function EnemyPage({
 
   const images = data
   .filter((item) => item.敵名 === enemyName)
-  .sort(
-    (a, b) =>
-      new Date(b.最終更新日).getTime() -
-      new Date(a.最終更新日).getTime()
-  );
+  .sort((a, b) => {
+    const dateA = Date.parse(a.最終更新日 || "");
+    const dateB = Date.parse(b.最終更新日 || "");
+
+    return dateB - dateA;
+  });
 
   return (
     <main
